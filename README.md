@@ -2,15 +2,45 @@
 
 A Model Context Protocol (MCP) server implementation for managing API test data and resources.
 
-## Short term solution
-
-Cursor doesn't support `Root` and `Resource` yet. We have to use `Tool` for now.
-
 ## Overview
 
 This server implements the MCP protocol to provide a structured way to access and manage API test data. It uses a hierarchical organization model where resources are scoped under organizations and applications.
 
-## Architecture
+## Current Implementation
+
+This server currently implements MCP using Tools (as Resources and Roots are not yet supported by Cursor). The server provides the following tools:
+
+1. **list-APIs**: Lists all recorded APIs available in Softprobe
+2. **list-api-record-ids**: Lists all recorded API records for a specific operation
+3. **getApiSamples**: Retrieves recorded API interaction samples in JSON format
+
+## Configuration
+
+The server can be configured using environment variables or through the `mcp.json` configuration file:
+
+```json
+{
+    "mcpServers": {
+        "mcp-server-softprobe": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@softprobe/mcp-server"
+            ],
+            "env": {
+                "SOFTPROBE_API_URL": "https://api-onpremise-gcp.softprobe.ai",
+                "SOFTPROBE_ACCESS_TOKEN": "<your-access-token>"
+            }
+        }
+    }
+}
+```
+
+Required environment variables:
+- `SOFTPROBE_API_URL`: Base URL for the Softprobe API
+- `SOFTPROBE_ACCESS_TOKEN`: Authentication token for API access
+
+## Future Architecture
 
 ### Root Hierarchy
 

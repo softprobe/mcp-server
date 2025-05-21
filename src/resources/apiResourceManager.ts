@@ -56,11 +56,20 @@ const APIRecordListSchema = z.object({
 });
 
 export class APIResourceManager {
-  private readonly API_BASE_URL = 'https://api-onpremise-gcp.softprobe.ai/api';
-  private readonly ACCESS_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDc5NjExODUsInVzZXJuYW1lIjoiYmlsbEBzb2Z0cHJvYmUuYWkifQ.9wXJazWzejC6HUMW_wMJ9KKCvJUznkFfzyiM3CkC71Q';
+  private readonly API_BASE_URL: string;
+  private readonly ACCESS_TOKEN: string;
+
+  constructor() {
+    this.API_BASE_URL = process.env.SOFTPROBE_API_URL || 'https://api-onpremise-gcp.softprobe.ai';
+    this.ACCESS_TOKEN = process.env.SOFTPROBE_ACCESS_TOKEN || '';
+    
+    if (!this.ACCESS_TOKEN) {
+      throw new Error('SOFTPROBE_ACCESS_TOKEN environment variable is required');
+    }
+  }
 
   public async listAPIs(appId: string): Promise<{ recorededAPIs: any[] }> {
-    const response = await fetch(`${this.API_BASE_URL}/report/aggCount`, {
+    const response = await fetch(`${this.API_BASE_URL}/api/report/aggCount`, {
       method: 'POST',
       headers: {
         'accept': 'application/json',
@@ -90,7 +99,7 @@ export class APIResourceManager {
    */
   public async listApiRecordIds(appId: string, operationName: string, 
       pageIndex: number = 1, pageSize: number = 10): Promise<{ totalCount: number, records: any[] }> {
-    const response = await fetch(`${this.API_BASE_URL}/report/listRecord`, {
+    const response = await fetch(`${this.API_BASE_URL}/api/report/listRecord`, {
       method: 'POST',
       headers: {
         'accept': 'application/json',
@@ -126,7 +135,7 @@ export class APIResourceManager {
    * Get API record content by record ID
    */
   public async getResourceContent(recordId: string): Promise<any> {
-    const response = await fetch(`${this.API_BASE_URL}/replay/query/viewRecord`, {
+    const response = await fetch(`${this.API_BASE_URL}/api/replay/query/viewRecord`, {
       method: 'POST',
       headers: {
         'accept': 'application/json',
