@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * SoftProbe MCP Server
  * 
