@@ -18,18 +18,12 @@ const APIRecordSchema = z.object({
     appId: z.string(),
     targetRequest: z.object({
       body: z.any().nullable(),
-      attributes: z.object({
-        RequestPath: z.string().optional(),
-        HttpMethod: z.string().optional(),
-        Headers: z.record(z.string()).optional()
-      }).nullable(),
+      attributes: z.any().nullable(),
       type: z.string().nullable()
     }),
     targetResponse: z.object({
       body: z.any(),
-      attributes: z.object({
-        Headers: z.record(z.string()).optional()
-      }).nullable(),
+      attributes: z.any().nullable(),
       type: z.string().nullable()
     }),
     operationName: z.string(),
