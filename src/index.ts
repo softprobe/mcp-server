@@ -97,6 +97,23 @@ const server = new McpServer({
 // });
 
 server.tool(
+    "get-session-recordings",
+    `Fetches a complete session recording by sessionId. This returns the entire JSON structure for that session, including all its traces and their nested interactions, as described in the Softprobe documentation.`,
+    {
+        sessionId: z.string().describe('The sessionId of the session to fetch')
+    },
+    async ({ sessionId }) => {
+        const session = await apiResourceManager.getSessionRecordingById(sessionId);
+        return {
+            content: [{
+                type: 'text',
+                text: JSON.stringify(session)
+            }]
+        };
+    }
+);
+
+server.tool(
     "list-APIs",
     `Lists all recorded APIs available in Softprobe.`,
     {

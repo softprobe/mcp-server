@@ -172,4 +172,24 @@ export class APIResourceManager {
       }]
     };
   }
+
+  /**
+   * Get a full session recording by sessionId
+   */
+  public async getSessionRecordingById(sessionId: string): Promise<any> {
+    const baseUrl = this.API_BASE_URL.replace('/api', 'storage');
+    const response = await fetch(`${baseUrl}/api/storage/session/${sessionId}`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json',
+        'access-token': this.ACCESS_TOKEN,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch session recording: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  }
 }
